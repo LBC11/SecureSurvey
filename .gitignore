@@ -44,3 +44,6 @@ media/
 *.swn
 *.bak
 *~
+
+## pi-heaan key folder
+keys/
