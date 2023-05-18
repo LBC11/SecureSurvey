@@ -1,19 +1,48 @@
 from django.shortcuts import render, redirect
-from .models import User
-from .forms import UserForm
+from .models import PersonalEmail
+from .forms import PersonalInfoForm
+from .user import PersonalInfo, User
+from django.conf import settings
 
 
-def user_create_view(request):
-    if request.method == "POST":
-        form = UserForm(request.POST)
+def register_user(request):
+    if request.method == 'POST':
+        form = PersonalInfoForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('user_list')
+            email = form.cleaned_data.get('email')
+
+            # Create PersonalInfo instance and save email
+            PersonalEmail.objects.create(email=email)
+
+            # create PersonalInfo instance
+            personal_info = PersonalInfo()
+            personal_info.set_personal_info(
+                form.cleaned_data.get('gender'),
+                form.cleaned_data.get('age'),
+                form.cleaned_data.get('marriage'),
+                form.cleaned_data.get('income'),
+                form.cleaned_data.get('education'),
+                form.cleaned_data.get('job'),
+                form.cleaned_data.get('phone'),
+                form.cleaned_data.get('phone_maker')
+            )
+
+            # create User instance with PersonalInfo instance
+            user = User(personal_info)
+
+            # Encrypt personal information
+            user_id = PersonalEmail.objects.latest('id').id
+            network = settings.NETWORK_INSTANCE
+            user.encrypt_personal_info(user_id, network)
+
+            return redirect('userapp:success_url')
+        else:
+            return render(request, 'userapp/user_form.html', {'form': form})
+
     else:
-        form = UserForm()
-    return render(request, 'userapp/user_form.html', {'form': form})
+        form = PersonalInfoForm()
+        return render(request, 'userapp/user_form.html', {'form': form})
 
 
-def user_list_view(request):
-    users = User.objects.all()
-    return render(request, 'userapp/user_list.html', {'users': users})
+def success(request):
+    return render(request, 'userapp/success.html')

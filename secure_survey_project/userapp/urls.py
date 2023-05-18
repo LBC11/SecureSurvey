@@ -1,7 +1,9 @@
 from django.urls import path
-from .views import user_create_view, user_list_view
+from . import views
+
+app_name = 'userapp'
 
 urlpatterns = [
-    path('create/', user_create_view, name='user_create'),
-    path('list/', user_list_view, name='user_list'),
+    path('register/', views.register_user, name='register'),
+    path('success/', views.success, name='success_url'),
 ]

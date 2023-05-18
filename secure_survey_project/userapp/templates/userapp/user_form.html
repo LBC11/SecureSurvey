@@ -1,5 +1,75 @@
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-</form>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>User Registration</title>
+</head>
+
+<body>
+    <h1>User Registration</h1>
+    <form method="POST" action="{% url 'userapp:register' %}">
+        {% csrf_token %}
+        <label for="email">Email:</label>
+        <input type="email" name="email" required><br><br>
+
+        <label for="gender">Gender:</label>
+        <select name="gender" required>
+            {% for value, name in form.fields.gender.choices %}
+            <option value="{{ value }}">{{ name }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label for="age">Age:</label>
+        <select name="age" required>
+            {% for value, name in form.fields.age.choices %}
+            <option value="{{ value }}">{{ name }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label for="marriage">Marriage:</label>
+        <select name="marriage" required>
+            {% for value, name in form.fields.marriage.choices %}
+            <option value="{{ value }}">{{ name }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label for="income">Income:</label>
+        <select name="income" required>
+            {% for value, name in form.fields.income.choices %}
+            <option value="{{ value }}">{{ name }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label for="education">Education:</label>
+        <select name="education" required>
+            {% for value, name in form.fields.education.choices %}
+            <option value="{{ value }}">{{ name }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label for="job">Job:</label>
+        <select name="job" required>
+            {% for value, name in form.fields.job.choices %}
+            <option value="{{ value }}">{{ name }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label for="phone">Phone Type:</label>
+        <select name="phone" required>
+            {% for value, name in form.fields.phone.choices %}
+            <option value="{{ value }}">{{ name }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label for="phone_maker">Phone Maker:</label>
+        <select name="phone_maker" required>
+            {% for value, name in form.fields.phone_maker.choices %}
+            <option value="{{ value }}">{{ name }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <input type="submit" value="Register">
+    </form>
+</body>
+
+</html>

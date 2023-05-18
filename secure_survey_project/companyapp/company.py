@@ -1,16 +1,25 @@
-from django.db import models
-import piheaan as heaan
+from pathlib import Path
 import json
+import piheaan as heaan
+from serverapp.component import Network
 
 
-class Company(models.Model):
-    personal_condition_dict = models.JSONField()
+class Company():
+    def __init__(self):
+        self.personal_condition_dict = None
+        self.personal_conditions = None
 
-    def load_personal_condition_dict(self, personal_condition_dict_path):
-        with open(str(personal_condition_dict_path), 'r') as f:
-            self.personal_condition_dict = json.load(f)
+        self.log_slots = 3
 
-    def get_encryptor(self, network):
+        self.context = None
+        self.public_key = None
+        self.encryptor = None
+
+    # def load_personal_condition_dict(self, personal_condition_dict_path: Path):
+    #     with open(str(personal_condition_dict_path), 'r') as f:
+    #         self.personal_condition_dict = json.load(f)
+
+    def get_encryptor(self, network: Network):
         self.context, self.public_key, self.encryptor = network.encryptor.get()
 
     def encrypt_personal_conditions(self, personal_conditions):
@@ -33,6 +42,7 @@ class Company(models.Model):
 
             for selection in selections:
                 condition = [0] * (2**self.log_slots)
+                # print(selection, list(selection.values())[0])
                 condition[i] = list(selection.values())[0]
                 personal_conditions.append(condition)
 
@@ -42,5 +52,5 @@ class Company(models.Model):
             number_of_elements_per_column, encrypted_personal_conditions)
         return
 
-    def send_personal_conditions(self, network):
+    def send_personal_conditions(self, network: Network):
         network.encrypted_personal_condition.put(self.personal_conditions)
