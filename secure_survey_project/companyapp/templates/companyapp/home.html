@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Company Homepage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+        }
+        .btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50%;
+            height: 100vh;
+            text-decoration: none;
+            color: white;
+            font-size: 2em;
+            transition: background-color 0.3s;
+        }
+        .company-btn {
+            background-color: #89CFF0;
+        }
+        .user-btn {
+            background-color: #F0A500;
+        }
+        .btn:hover {
+            background-color: #999;
+        }
+    </style>
+</head>
+<body>
+    <a class="btn company-btn" href="http://127.0.0.1:8000/companyapp/request/">Company</a>
+    <a class="btn user-btn" href="http://127.0.0.1:8000/userapp/register/">User</a>
+</body>
+</html>

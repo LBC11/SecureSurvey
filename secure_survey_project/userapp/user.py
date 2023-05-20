@@ -35,6 +35,7 @@ class User():
 
     def encrypt_personal_info(self, id: int, network: Network):
         data = self.personal_info.return_list()
+
         data_complex = [complex(x, 0) if not isinstance(
             x, str) else complex(x) for x in data]
         network.encrypt_personal_info(id, data_complex)

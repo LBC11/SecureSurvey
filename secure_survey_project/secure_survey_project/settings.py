@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from .local_settings import DATABASE_PASSWORD
+from .local_settings import EMAIL_HOST_USER
+from .local_settings import EMAIL_HOST_PASSWORD
 from pathlib import Path
 
 from serverapp.component import Network
@@ -37,6 +39,14 @@ SECRET_KEY = 'default_secret_key'
 DEBUG = False
 
 ALLOWED_HOSTS = ['*']
+
+# Email Settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
 
 
 # Application definition

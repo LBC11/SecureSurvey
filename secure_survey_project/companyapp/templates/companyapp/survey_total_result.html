@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Result</title>
+    <style>
+        body {
+            background-color: #ECF2F8;
+            font-family: Arial, sans-serif;
+            color: #495057;
+        }
+        .container {
+            width: 50%;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #243447;
+        }
+        ul {
+            list-style: none;
+        }
+        ul li {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Survey ID: {{ survey.id }}</h1>
+        <h2>Results</h2>
+        <ul>
+            {% for question in questions %}
+                <li>
+                    <strong>{{ question.question_text }}</strong><br>
+                    1. 전혀 아니다 선택: {{ question.answer_count_1 }}명<br>
+                    2. 아니다 선택: {{ question.answer_count_2 }}명<br>
+                    3. 보통이다 선택: {{ question.answer_count_3 }}명<br>
+                    4. 그렇다 선택: {{ question.answer_count_4 }}명<br>
+                    5. 매우 그렇다 선택: {{ question.answer_count_5 }}명<br>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
