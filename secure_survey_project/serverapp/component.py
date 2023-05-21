@@ -104,6 +104,9 @@ class Network:
         ciphertext = heaan.Ciphertext(self.context)
         self.encryptor.encrypt(message, self.public_key, ciphertext)
 
+        # ensure the directory exists
+        self.user_dir.mkdir(parents=True, exist_ok=True)
+
         # cipher text 저장
         file_path = self.user_dir / f"{id}.ctxt"
         ciphertext.save(str(file_path))

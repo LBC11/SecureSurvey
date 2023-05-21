@@ -10,9 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-from .local_settings import DATABASE_PASSWORD
-from .local_settings import EMAIL_HOST_USER
-from .local_settings import EMAIL_HOST_PASSWORD
+from .local_settings import DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD, DATABASE_HOST, DATABASE_PORT
+from .local_settings import EMAIL_HOST_USER, EMAIL_HOST_PASSWORD
 from pathlib import Path
 
 from serverapp.component import Network
@@ -100,11 +99,11 @@ WSGI_APPLICATION = 'secure_survey_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'secure',
-        'USER': 'root',
+        'NAME': DATABASE_NAME,
+        'USER': DATABASE_USER,
         'PASSWORD': DATABASE_PASSWORD,
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'HOST': DATABASE_HOST,
+        'PORT': DATABASE_PORT,
     }
 }
 
