@@ -12,13 +12,11 @@ def request_research(request):
         formset = QuestionFormset(request.POST, prefix='questions')
 
         if form.is_valid() and formset.is_valid():
-            # PersonalInfoForm 데이터 저장
 
             survey = Survey(email=form.cleaned_data['email'])
             survey.save()
 
             for question_form in formset:
-                # 각 QuestionForm 데이터 저장
                 question_text = question_form.cleaned_data['question_text']
                 question = Question(survey=survey, question_text=question_text)
                 question.save()
@@ -61,17 +59,13 @@ def survey_request(request, survey_id):
 
 def survey_response(request, survey_id):
     if request.method == 'POST':
-        # survey_id로 Survey 인스턴스를 가져옵니다.
         survey = get_object_or_404(Survey, id=survey_id)
 
-        # 관련된 모든 Question 인스턴스를 가져옵니다.
         questions = survey.questions.all()
 
         for question in questions:
-            # Question에 대한 응답을 가져옵니다.
             response = request.POST.get(f'response_{question.id}')
 
-            # 응답에 따라 적절한 answer_count 값을 증가시킵니다.
             if response == '1':
                 question.answer_count_1 += 1
             elif response == '2':
@@ -83,10 +77,8 @@ def survey_response(request, survey_id):
             elif response == '5':
                 question.answer_count_5 += 1
             else:
-                # 잘못된 응답 값을 처리합니다.
                 return JsonResponse({'error': 'Invalid response value.'}, status=400)
 
-            # Question 인스턴스를 업데이트합니다.
             question.save()
 
         total_responses = 0
@@ -97,14 +89,12 @@ def survey_response(request, survey_id):
             total_responses += question.answer_count_4
             total_responses += question.answer_count_5
 
-        # 3명이 응답하면 전송
         if (total_responses == survey.questions.count() * 3):
             company = Company()
             company.send_survey_result_to_company(survey_id)
 
         return HttpResponse('Success', status=200)
     else:
-        # POST가 아닌 다른 HTTP 메소드를 처리합니다.
         return JsonResponse({'error': 'Invalid HTTP method.'}, status=405)
 
 

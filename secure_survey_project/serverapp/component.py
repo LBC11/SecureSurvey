@@ -35,7 +35,6 @@ class Network:
             self.encrypted_personal_info: List[Tuple[int, heaan.Ciphertext]] = [
             ]
 
-            # 각 번호에서 중복 선택된 횟수, 각 항목의 ciphertext
             self.encrypted_personal_condition: List[Tuple[List, List[heaan.Ciphertext]]] = [
             ]
             self.encrypted_survey_result: List = []
@@ -107,11 +106,9 @@ class Network:
         # ensure the directory exists
         self.user_dir.mkdir(parents=True, exist_ok=True)
 
-        # cipher text 저장
         file_path = self.user_dir / f"{id}.ctxt"
         ciphertext.save(str(file_path))
 
-        # List 에도 저장
         user_info = (id, ciphertext)
         self.encrypted_personal_info.append(user_info)
 
@@ -120,7 +117,7 @@ class Network:
         for personal_condition in personal_conditions:
             message = heaan.Message(self.log_slots)
             for i, condition_value in enumerate(personal_condition):
-                # 값들을 complex 타입으로 변환
+
                 complex_value = complex(condition_value, 0.0)
                 message[i] = complex_value
 
@@ -138,7 +135,7 @@ class Network:
             for selection in selections:
                 condition = [0] * (2 ** self.log_slots)
                 condition_value = selection
-                column_index = int(column)  # 문자열 열 인덱스 값을 정수로 변환
+                column_index = int(column)
                 condition[column_index] = int(condition_value)
                 personal_conditions.append(condition)
 
@@ -148,21 +145,15 @@ class Network:
 
         self.encrypted_personal_condition.append(temp)
 
-        # print("data: ", self.encrypted_personal_condition)
-
-        # print(len(self.encrypted_personal_condition))
-
     def find_target_user(self):
         number_of_elements_per_column, encrypted_personal_conditions = self.encrypted_personal_condition[
             len(self.encrypted_personal_condition) - 1]
 
-        # id 를 기준으로 오름차순으로 정렬
         self.encrypted_personal_info = sorted(
             self.encrypted_personal_info, key=lambda x: x[0])
 
-        # user_idx = [x for x in range(len(self.user_table.index))]
         user_idx = [e[0]
-                    for e in self.encrypted_personal_info]  # (id, encrypted_info)
+                    for e in self.encrypted_personal_info]
 
         target_user_idx = []
 
@@ -176,7 +167,6 @@ class Network:
 
                 for idx in user_idx:
 
-                    # current_personal_info = self.user_table.iloc[idx]['encrypted_personal_info']
                     current_personal_info = self.encrypted_personal_info[idx - user_idx[0]][1]
 
                     result_discrete_equal = heaan.Ciphertext(self.context)
